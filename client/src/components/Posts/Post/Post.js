@@ -13,7 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import moment from "moment";
 import { useDispatch } from "react-redux";
-import { deletePost } from "../../../actions/posts";
+import { deletePost, likePost } from "../../../actions/posts";
 
 const Post = ({ post, setCurrentId }) => {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ const Post = ({ post, setCurrentId }) => {
           size="small"
           onClick={() => setCurrentId(post._id)}
         >
-          <MoreHorizIcon fontSize="default" />
+          <MoreHorizIcon fontSize= "default" />
         </Button>
       </div>
       <div className={classes.details}>
@@ -46,18 +46,23 @@ const Post = ({ post, setCurrentId }) => {
           {post.tag.map((tag) => `#${tag}`)}
         </Typography>
       </div>
-      <Typography className={classes.title} variant="h4" gutterBottom>
+      <Typography className={classes.title} variant="h5" gutterBottom>
         {post.title}
       </Typography>
       <CardContent>
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="h6" color="textSecondary">
           {post.message}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => dispatch(likePost(post._id))}
+        >
           <ThumbUpAltIcon fontSize="small" />
-          Like {post.likeCount}
+          &nbsp; Like &nbsp;
+          {post.likeCount}
         </Button>
         <Button
           size="small"
@@ -65,7 +70,7 @@ const Post = ({ post, setCurrentId }) => {
           onClick={() => dispatch(deletePost(post._id))}
         >
           <DeleteIcon fontSize="small" />
-          Delete
+          &nbsp; Delete
         </Button>
       </CardActions>
     </Card>
