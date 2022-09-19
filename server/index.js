@@ -19,12 +19,12 @@ app.use(cors());
 app.use('/posts', postRoutes);
 
 app.get('/', (req, res) => {
-    res.send('Hello to posts');
+    res.send('Hello to Posts API' );
 });
 
 const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 mongoose.connect(DB, {useNewUrlParser: true, useUnifiedTopology: true}).then(() => app.listen(port, () => console.log(`Servidor activo en puerto: ${port}`))).catch();
 
