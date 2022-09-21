@@ -38,7 +38,7 @@ const Post = ({ post, setCurrentId }) => {
           size="small"
           onClick={() => setCurrentId(post._id)}
         >
-          <MoreHorizIcon fontSize= "default" />
+          <MoreHorizIcon fontSize="default" />
         </Button>
       </div>
       <div className={classes.details}>
