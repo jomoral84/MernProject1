@@ -5,12 +5,12 @@ import { useDispatch } from "react-redux";
 
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
-import useStyles from "../Home/home_style";
 import { getPosts } from "../../actions/posts";
+import Auth from "../Auth/Auth";
 
 const Home = () => {
   const [currentId, setCurrentId] = useState(0);
-  const classes = useStyles();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,9 +20,7 @@ const Home = () => {
   return (
     <Grow in>
       <Container>
-        <Grid
-          className={classes.mainContainer}
-          container
+        <Grid container
           justifyContent="space-between"
           alignItems="stretch"
           spacing={3}
@@ -33,7 +31,7 @@ const Home = () => {
 
           <Grid item xs={12} sm={4}>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
-          </Grid>
+        </Grid>
         </Grid>
       </Container>
     </Grow>
