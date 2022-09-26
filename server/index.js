@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import dotenv from 'dotenv';
 
 import postRoutes from './routes/postRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 dotenv.config({ path: './config.env' });
 
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 app.use(cors());
 
 app.use('/posts', postRoutes);
+app.use('/user', userRoutes);
 
 app.get('/', (req, res) => {
     res.send('Hello to Posts API' );

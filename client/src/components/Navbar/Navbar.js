@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AppBar, Avatar, Toolbar, Typography, Button } from "@material-ui/core";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import useStyles from "./navbar_style";
@@ -12,14 +12,20 @@ const Navbar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useNavigate();
+  const location = useLocation();
 
   const logout = () => {
-    dispatch({ type: actionType.LOGOUT });
+    dispatch({ type: "LOGOUT" });
 
-    history.push("/auth");
+    history.push("/");
 
     setUser(null);
   };
+
+  useEffect(() => {
+    const token = user?.token;
+    setUser(JSON.parse(localStorage.getItem("profile")));
+  }, [location]);
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
@@ -41,7 +47,7 @@ const Navbar = () => {
         ></img>
       </div>
       <Toolbar className={classes.toolbar}>
-        {user ? (
+        {user?.result ? (
           <div className={classes.profile}>
             <Avatar
               className={classes.purple}
@@ -68,7 +74,6 @@ const Navbar = () => {
             to="/auth"
             variant="contained"
             color="primary"
-            
           >
             Sign In
           </Button>

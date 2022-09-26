@@ -20,7 +20,8 @@ const Home = () => {
   return (
     <Grow in>
       <Container>
-        <Grid container
+        <Grid
+          container
           justifyContent="space-between"
           alignItems="stretch"
           spacing={3}
@@ -31,7 +32,7 @@ const Home = () => {
 
           <Grid item xs={12} sm={4}>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
-        </Grid>
+          </Grid>
         </Grid>
       </Container>
     </Grow>

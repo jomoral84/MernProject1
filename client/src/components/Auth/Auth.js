@@ -10,30 +10,51 @@ import {
   Icon,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/core/Icon";
+import { useNavigate } from "react-router-dom";
 import { GoogleLogin, googleSucess, googleFailure } from "react-google-login";
 
+import { signup, signin } from "../../actions/auth";
 import useStyles from "./auth_style";
 import Input from "./Input";
+
+const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: ''}
 
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const [formData, setFormData] = useState(initialState);
   const state = null;
+  const history = useNavigate();
 
-  const responseGoogle = (response) => {
-    console.log(response);
+  // const responseGoogle = (response) => {
+  //   console.log(response);
+  // };
+
+  // const googleFailure = () => {
+  //   console.log("Google Error");
+  // };
+
+  // const googleSucess = () => {};
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+ 
+    if (isSignup) {
+      dispatchEvent()
+    }
+
+
+    console.log(formData);
+  };
+           
+  // Handler que toma los value del form 
+  const handleChange = (e) => {
+    setFormData({... formData, [ e.target.name]: e.target.value});
   };
 
-  const googleFailure = () => {
-    console.log("Google Error");
-  };
+ 
 
-  const googleSucess = () => {};
-
-  const handleSubmit = () => {};
-
-  const handleChange = () => {};
 
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -55,14 +76,14 @@ const Auth = () => {
             {isSignup && (
               <>
                 <Input
-                  name="firstname"
+                  name="firstName"
                   label="Nombre"
                   handleChange={handleChange}
                   autoFocus
                   half
                 ></Input>
                 <Input
-                  name="lastname"
+                  name="lastName"
                   label="Apellido"
                   handleChange={handleChange}
                   half
@@ -91,7 +112,7 @@ const Auth = () => {
               ></Input>
             )}
           </Grid>
-      
+
           <Button
             type="submit"
             fullWidth
@@ -101,7 +122,7 @@ const Auth = () => {
           >
             {isSignup ? "Sign Up" : "Sign In"}
           </Button>
-          <GoogleLogin
+          {/* <GoogleLogin
             clientId="GOOGLE_ID"
             onSuccess={googleSucess}
             onFailure={googleFailure}
@@ -119,7 +140,7 @@ const Auth = () => {
                 Google Sign In
               </Button>
             )}
-          />
+          /> */}
           <Grid container justify="flex-end">
             <Grid item>
               <Button onClick={switchMode}>
