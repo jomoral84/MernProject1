@@ -1,20 +1,31 @@
-import * as api from "../api/index";
-import { AUTH } from '../constants/actionTypes';
+/* eslint-disable */
 
-export const signin = (formData, history) => async(dispatch) => { 
-    try {
-         history.push('/');
-    } catch (error) {
-         console.log(error);
-    }
-}
+import { AUTH } from "../constants/actionTypes";
+import * as api from "../api/index.js";
 
 
+export const signin = (formData, navigate) => async (dispatch) => {
+  try {
+    const { data } = await api.signIn(formData);
 
-export const signup = (formData, history) => async(dispatch) => {
-    try {
-        history.push('/');
-   } catch (error) {
-        console.log(error);
-   }
-}
+   
+    dispatch({ type: AUTH, data });
+    console.log("Usuario correcto!");
+    navigate('/');
+  } catch (error) {
+    console.log(error.response.data.message);
+  }
+};
+
+export const signup = (formData, navigate) => async (dispatch) => {
+  try {
+    const { data } = await api.signUp(formData);
+
+    
+    dispatch({ type: AUTH, data });
+    console.log("Usuario creado!");
+    navigate('/');
+  } catch (error) {
+    console.log(error.response.data.message);
+  }
+};

@@ -11,21 +11,24 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/core/Icon";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin, googleSucess, googleFailure } from "react-google-login";
 
 import { signup, signin } from "../../actions/auth";
+import { AUTH } from "../../constants/actionTypes";
 import useStyles from "./auth_style";
 import Input from "./Input";
+import { useDispatch } from "react-redux";
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: ''}
 
 const Auth = () => {
-  const classes = useStyles();
+  
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const [formData, setFormData] = useState(initialState);
   const state = null;
-  const history = useNavigate();
+  const navigate = useNavigate();
+  const classes = useStyles();
+  const dispatch = useDispatch();
 
   // const responseGoogle = (response) => {
   //   console.log(response);
@@ -37,38 +40,38 @@ const Auth = () => {
 
   // const googleSucess = () => {};
 
+  const switchMode = () => {
+    setFormData(initialState);
+    setIsSignup((prevIsSignup) => !prevIsSignup);
+    setShowPassword(false);
+  };
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
  
     if (isSignup) {
-      dispatchEvent()
+      dispatch(signup(formData, navigate));
+    } else {
+      dispatch(signin(formData, navigate));
     }
-
-
-    console.log(formData);
   };
-           
-  // Handler que toma los value del form 
+
+
+    // Handler que toma los value del form 
   const handleChange = (e) => {
-    setFormData({... formData, [ e.target.name]: e.target.value});
+    setFormData({...formData, [ e.target.name]: e.target.value});
   };
 
- 
-
-
-  const handleShowPassword = () =>
+ const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
 
-  const switchMode = () => {
-    setIsSignup((prevIsSignup) => !prevIsSignup);
-    handleShowPassword(false);
-  };
-
+ 
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={3}>
         <Avatar className={classes.avatar}>
-          <LockOutlinedIcon></LockOutlinedIcon>
+          <LockOutlinedIcon/>
         </Avatar>
         <Typography variant="h5">{isSignup ? "Sign Up" : "Sign In"}</Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
@@ -95,21 +98,22 @@ const Auth = () => {
               label="Email"
               handleChange={handleChange}
               type="email"
-            ></Input>
+            />
             <Input
               name="password"
               label="Password"
               handleChange={handleChange}
               type={showPassword ? "text" : "password"}
+           
               handleShowPassword={handleShowPassword}
-            ></Input>
+            />
             {isSignup && (
               <Input
                 name="confirmPassword"
                 label="Repetir Password"
                 type="password"
                 handleChange={handleChange}
-              ></Input>
+              />
             )}
           </Grid>
 
@@ -141,7 +145,7 @@ const Auth = () => {
               </Button>
             )}
           /> */}
-          <Grid container justify="flex-end">
+          <Grid container justifyContent="flex-end">
             <Grid item>
               <Button onClick={switchMode}>
                 {isSignup

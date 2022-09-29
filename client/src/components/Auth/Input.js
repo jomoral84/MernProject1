@@ -1,7 +1,7 @@
 import React from "react";
-import { TextField, Grid, InputAdornment, IconButton } from "@material-ui/core";
-import Visibility from "@material-ui/core/Icon";
-import VisibilityOff from "@material-ui/core/Icon";
+import { TextField, Grid, InputAdornment, IconButton} from "@material-ui/core";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const Input = ({
   half,
@@ -27,9 +27,9 @@ const Input = ({
           name === "password"
             ? {
                 endAdornment: (
-                  <InputAdornment>
+                  <InputAdornment position="end">
                     <IconButton onClick={handleShowPassword}>
-                      {type === "password" ? <Visibility /> : <VisibilityOff />}
+                      {type === 'password' ? <VisibilityIcon /> : <VisibilityOffIcon />}
                     </IconButton>
                   </InputAdornment>
                 ),

@@ -1,6 +1,8 @@
 import User from "../models/userModel.js";
-import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+const secret = "test";
 
 export const signin = async (req, res) => {
   const { email, password } = req.body;
@@ -21,35 +23,44 @@ export const signin = async (req, res) => {
       return res.status(404).json({ message: "Password Incorrecto!" });
     }
 
-     const token = jwt.sign({email: existUser.email, id: existUser._id}, 'test', {expiresIn: "1h"})
+    const token = jwt.sign(
+      { email: existUser.email, id: existUser._id },
+      secret,
+      { expiresIn: "1h" }
+    );
 
-     res.status(200).json({result: existUser, token})
-
+    res.status(200).json({ result: existUser, token });
   } catch (error) {
-      res.status(500).json({message: 'Hubo un problema'})
+    res.status(500).json({ message: "Hubo un problema" });
   }
 };
 
 export const signup = async (req, res) => {
+  const { firstName, lastName, email, password } = req.body;
 
-    const {firstName, LastName, email, password, confirmPassword} =  req.body;
+  try {
+    const existUser = await User.findOne({ email });
 
-    try {
-        const existUser = await User.findOne({ email});
+    if (existUser)
+      return res.status(400).json({ message: "El usuario ya existe" });
 
-        if (existUser) return res.status(400).json({message: "El usuario ya existe"})
- 
-    if ( password !== confirmPassword) return res.status(400).json({message: "Los passwords no coinciden"});
+    // if (password !== confirmPassword)
+    //   return res.status(400).json({ message: "Los passwords no coinciden" });
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const hashedPassword = await bcrypt.hash(password, 12); // Encripta el password ingresado
 
-    const result = await User.create({email, password: hashedPassword, name: `${firstName} ${LastName}`});
-    const token = jwt.sign({email: result.email, id: result._id}, 'test', {expiresIn: "1h"})
+    const result = await User.create({
+      email,
+      password: hashedPassword,
+      name: `${firstName} ${lastName}`,
+    });
+    const token = jwt.sign({ email: result.email, id: result._id }, secret, {
+      expiresIn: "1h",
+    });
 
-    res.status(200).json({result: result, token})
-
-    } catch (error) {
-        res.status(500).json({message: 'Hubo un problema'})
-    }
-
+    res.status(200).json({ result: result, token });
+  } catch (error) {
+    res.status(500).json({ message: "Hubo un problema" });
+    console.log(error);
+  }
 };
