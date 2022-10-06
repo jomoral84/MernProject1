@@ -21,18 +21,21 @@ const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
   const user = JSON.parse(localStorage.getItem("profile"));
 
-  // const Likes = () => {
-  //   if (post.likes.length > 0) {
-  //     return post.likes.find((like) => like === (user?.result?._id))
-  //       ? (
-  //         <><ThumbUpAltIcon fontSize="small" />&nbsp;{post.likes.length > 2 ? `You and ${post.likes.length - 1} others` : `${post.likes.length} like${post.likes.length > 1 ? 's' : ''}` }</>
-  //       ) : (
-  //         <><ThumbUpAltOutlined fontSize="small" />&nbsp;{post.likes.length} {post.likes.length === 1 ? 'Like' : 'Likes'}</>
-  //       );
-  //   }
 
-  //   return <><ThumbUpAltOutlined fontSize="small" />&nbsp;Like</>;
-  // };
+   // Logica para el boton de Likes
+
+  const Likes = () => {
+    if (post.likes.length > 0) {
+      return post.likes.find((like) => like === (user?.result?._id))
+        ? (
+          <><ThumbUpAltIcon fontSize="small" />&nbsp;{post.likes.length > 2 ? `Tu y ${post.likes.length - 1} mas` : `${post.likes.length} like${post.likes.length > 1 ? 's' : ''}` }</>
+        ) : (
+          <><ThumbUpAltOutlined fontSize="small" />&nbsp;{post.likes.length} {post.likes.length === 1 ? 'Like' : 'Likes'}</>
+        );
+    }
+
+    return <><ThumbUpAltOutlined fontSize="small" />&nbsp;Like</>;
+  };
 
   return (
     <Card className={classes.card}>
@@ -78,7 +81,7 @@ const Post = ({ post, setCurrentId }) => {
           disabled={!user?.result}
           onClick={() => dispatch(likePost(post._id))}
         >
-          {/* <Likes /> */}
+          {<Likes />}
         </Button>
         {user?.result?._id === post?.creator && (
           <Button

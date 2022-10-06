@@ -46,7 +46,7 @@ const Form = ({ currentId, setCurrentId }) => {
   if (!user?.result?.name)  {
          return (
           <Paper className={classes.paper}>
-          <Typography variant="h6" align="center">Logearse para ver sus Posts</Typography>
+          <Typography variant="h6" align="center">Logearse para editar Posts</Typography>
           </Paper>
          );
   } 

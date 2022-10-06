@@ -18,7 +18,7 @@ import useStyles from "./auth_style";
 import Input from "./Input";
 import { useDispatch } from "react-redux";
 
-const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: ''}
+const initialState = { firstName: '', email: '', password: '', confirmPassword: ''}
 
 const Auth = () => {
   
@@ -85,12 +85,7 @@ const Auth = () => {
                   autoFocus
                   half
                 ></Input>
-                <Input
-                  name="lastName"
-                  label="Apellido"
-                  handleChange={handleChange}
-                  half
-                ></Input>
+              
               </>
             )}
             <Input
