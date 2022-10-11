@@ -4,11 +4,29 @@ import mongoose from "mongoose";
 
 const router = express.Router();
 
+
 export const getPosts = async (req, res) => {
   try {
     const postMessages = await PostMessage.find();
     console.log(postMessages);
     res.status(200).json(postMessages);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+// Opciones de busqueda: Query y Params
+// Query -> /posts?page=1 -> page = 1
+// Params -> /posts/123 -> id = 123
+
+export const getPostBySearch = async (req, res) => {
+  
+  const {searchQuery, tags} = req.query;
+  try {
+     const title = new RegExp(searchQuery, 'i');   // Regular Expression
+     const posts = await PostMessage.find({ $or: [{title}, { tags: { $in: tags.split(',')}}]})
+    
+    res.status(200).json({data: posts});
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

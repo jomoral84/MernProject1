@@ -1,11 +1,13 @@
 /* eslint-disable */
-import { DELETE, CREATE, FETCH_ALL, UPDATE, LIKE} from '../constants/actionTypes';
+import { DELETE, CREATE, FETCH_ALL, UPDATE, LIKE, FETCH_BY_SEARCH} from '../constants/actionTypes';
 
 
 export default (posts = [], action) => {
    switch(action.type ) {
        case FETCH_ALL:
        return action.payload;
+       case FETCH_BY_SEARCH:
+        return action.payload;
        case LIKE:
         return posts.map((post) => (post._id === action.payload._id ? action.payload : post));
        case CREATE:
