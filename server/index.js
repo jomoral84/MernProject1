@@ -36,4 +36,4 @@ mongoose
   .then(() =>
     app.listen(port, () => console.log(`Servidor activo en puerto: ${port}`))
   )
-  .catch((error) => console.log(`${error} did not connect`));
+  .catch((error) => console.log(`${error} : No se pudo conectar`));

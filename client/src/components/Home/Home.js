@@ -28,7 +28,7 @@ function useQuery() {
 
 const Home = () => {
   const [currentId, setCurrentId] = useState(0);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const classes = useStyle();
   const dispatch = useDispatch();
   const query = useQuery();
@@ -42,13 +42,14 @@ const Home = () => {
   }, [currentId, dispatch]);
 
   const searchPost = () => {
-    if(search.trim() || tags) {
- 
-      // Uso de Redux para la busqueda      
-       dispatch(getPostsBySearch({search, tags: tags.join(',')}));
-       history(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`)
+    if (search.trim() || tags) {
+      // Uso de Redux para la busqueda
+      dispatch(getPostsBySearch({ search, tags: tags.join(",") }));
+      history(
+        `/posts/search?searchQuery=${search || "none"}&tags=${tags.join(",")}`
+      );
     } else {
-      history('/');
+      history("/");
     }
   };
 
@@ -58,9 +59,9 @@ const Home = () => {
     }
   };
 
-  const handleAdd = (tag) => setTags([...tags, tag]);
+  const handleAddChip = (tag) => setTags([...tags, tag]);
 
-  const handleDelete = (tagToDelete) =>
+  const handleDeleteChip = (tagToDelete) =>
     setTags(tags.filter((tag) => tag !== tagToDelete));
 
   return (
@@ -96,8 +97,8 @@ const Home = () => {
               <ChipInput
                 style={{ margin: "10px 0" }}
                 value={tags}
-                onAdd={handleAdd}
-                onDelete={handleDelete}
+                onAdd={handleAddChip}
+                onDelete={handleDeleteChip}
                 label="Buscar Tags"
               />
               <Button
@@ -110,9 +111,11 @@ const Home = () => {
               </Button>
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
-            <Paper className={classes.pagination} elevation={6}>
-              <Pagination />
-            </Paper>
+            {(!searchQuery && !tags.length) && (
+              <Paper className={classes.pagination} elevation={6}>
+                <Pagination page={page} />
+              </Paper>
+            )}
           </Grid>
         </Grid>
       </Container>
