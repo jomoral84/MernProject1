@@ -16,6 +16,7 @@ export const getPost = (id) => async (dispatch) => {
     dispatch({ type: START_LOADING });
     const { data } = await api.fetchPost(id);
     dispatch({ type: FETCH_POST, payload: {post: data} });
+    dispatch({ type: END_LOADING });
    
   } catch (error) {
     console.log(error);
@@ -52,6 +53,7 @@ export const createPost = (post, history) => async (dispatch) => {
     dispatch({ type: START_LOADING });
     const { data } = await api.createPost(post);
     dispatch({ type: CREATE, payload: data });
+    history(`/posts/${data._id}`);
     console.log("Post Creado!");
   } catch (error) {
     console.log(error);

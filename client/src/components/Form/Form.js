@@ -4,9 +4,11 @@ import FileBase from "react-file-base64";
 import useStyles from "./form_style";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../actions/posts";
+import { useNavigate } from "react-router-dom";
 
 const Form = ({ currentId, setCurrentId }) => {
 
+  const history = useNavigate();
   const [postData, setPostData] = useState({
     title: '',
     message: '',
@@ -15,7 +17,7 @@ const Form = ({ currentId, setCurrentId }) => {
   });
 
   const post = useSelector((state) =>
-    currentId ? state.posts.find((p) => p._id === currentId) : null
+    currentId ? state.posts.posts.find((message) => message._id === currentId) : null
   );
 
   const dispatch = useDispatch();
@@ -28,14 +30,15 @@ const Form = ({ currentId, setCurrentId }) => {
 
   const clear = () => {
     setCurrentId(0);
-    setPostData({ title: '', message: '', tag: '', selectedFile: '' });
+    setPostData({ title: '', message: '', tag: [], selectedFile: '' });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (currentId === 0) {
-      dispatch(createPost({ ...postData, name: user?.result?.name }));
+      dispatch(createPost({ ...postData, name: user?.result?.name }, history));
+      
     } else {
       dispatch(updatePost(currentId, {... postData, name: user?.result?.name}));
     }

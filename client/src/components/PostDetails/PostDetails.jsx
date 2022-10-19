@@ -22,7 +22,9 @@ const Post = () => {
 
   // useEffect(() => {
   //   if (post) {
-  //     dispatch(getPostsBySearch({ search: 'none', tags: post?.tags.join(',') }));
+  //     // dispatch(getPostsBySearch({ search: 'none', tags: post?.tags.join(',') }));
+     
+      
   //   }
   // }, [post]);
 
@@ -33,19 +35,20 @@ const Post = () => {
       </Paper>
   )};
 
-  const openPost = (_id) => history(`/posts/${_id}`);
+  
 
-  // if (isLoading) {
-  //   return (
-  //     <Paper elevation={6} className={classes.loadingPaper}>
-  //       <CircularProgress size="7em" />
-  //     </Paper>
-  //   );
-  // }
+  if (isLoading) {
+    return (
+      <Paper elevation={6} className={classes.loadingPaper}>
+        <CircularProgress size="7em" />
+      </Paper>
+    )};
 
   const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
+  const openPost = (_id) => history(`/posts/${_id}`);
 
   return (
+    
     <Paper style={{ padding: '20px', borderRadius: '15px' }} elevation={6}>
       <div className={classes.card}>
         <div className={classes.section}>
@@ -64,9 +67,9 @@ const Post = () => {
           <img className={classes.media} src={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} alt={post.title} />
         </div>
       </div>
-      {/* {!!recommendedPosts.length && (
+      {!recommendedPosts.length && (
         <div className={classes.section}>
-          <Typography gutterBottom variant="h5">You might also like:</Typography>
+          <Typography gutterBottom variant="h5">Tambien puede gustarte:</Typography>
           <Divider />
           <div className={classes.recommendedPosts}>
             {recommendedPosts.map(({ title, name, message, likes, selectedFile, _id }) => (
@@ -80,9 +83,10 @@ const Post = () => {
             ))}
           </div>
         </div>
-      )} */}
+      )}
     </Paper>
-  );
+  )
+  
 };
 
 export default Post;
