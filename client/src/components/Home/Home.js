@@ -15,12 +15,11 @@ import ChipInput from "material-ui-chip-input";
 
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
-import { getPosts, getPostsBySearch } from "../../actions/posts";
+import { getPostsBySearch } from "../../actions/posts";
 import Auth from "../Auth/Auth";
-import Paginate from "../Pagination/Pagination";
+import Pagination from "../Pagination/Pagination";
 import useStyle from "./home_style";
 
-import { Pagination } from "@mui/material";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -28,25 +27,23 @@ function useQuery() {
 
 const Home = () => {
   const [currentId, setCurrentId] = useState(0);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const classes = useStyle();
   const dispatch = useDispatch();
   const query = useQuery();
   const history = useNavigate();
-  const page = query.get("page") || 1;
-  const searchQuery = query.get("searchQuery");
+  const page = query.get('page') || 1;
+  const searchQuery = query.get('searchQuery');
   const [tags, setTags] = useState([]);
 
-  useEffect(() => {
-    dispatch(getPosts());
-  }, [currentId, dispatch]);
+ 
 
   const searchPost = () => {
     if (search.trim() || tags) {
       // Uso de Redux para la busqueda
-      dispatch(getPostsBySearch({ search, tags: tags.join(",") }));
+      dispatch(getPostsBySearch({ search, tags: tags.join(',') }));
       history(
-        `/posts/search?searchQuery=${search || "none"}&tags=${tags.join(",")}`
+        `/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`
       );
     } else {
       history("/");
@@ -87,8 +84,8 @@ const Home = () => {
               <TextField
                 name="search"
                 variant="outlined"
-                label="Buscar"
-                onKeyPress={handleKeyPress}
+                label="Buscar Posts"
+                onKeyDown={handleKeyPress}
                 fullWidth
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -97,21 +94,21 @@ const Home = () => {
               <ChipInput
                 style={{ margin: "10px 0" }}
                 value={tags}
-                onAdd={handleAddChip}
-                onDelete={handleDeleteChip}
+                onAdd={(chip) => handleAddChip(chip)}
+                onDelete={(chip) => handleDeleteChip(chip)}
                 label="Buscar Tags"
+                variant="outlined"
               />
               <Button
                 onClick={searchPost}
                 className={classes.searchButton}
                 variant="contained"
                 color="primary"
-              >
-                Buscar
+              >Buscar
               </Button>
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
-            {!searchQuery && !tags.length && (
+            {(!searchQuery && !tags.length) && (
               <Paper className={classes.pagination} elevation={6}>
                 <Pagination page={page} />
               </Paper>

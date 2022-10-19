@@ -9,7 +9,8 @@ import {
   TextField,
   Icon,
 } from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/core/Icon";
+
+import LockOutlinedIcon from '@mui/icons-material/Lock';
 import { useNavigate } from "react-router-dom";
 
 import { signup, signin } from "../../actions/auth";
@@ -69,7 +70,7 @@ const Auth = () => {
  
   return (
     <Container component="main" maxWidth="xs">
-      <Paper className={classes.paper} elevation={3}>
+      <Paper className={classes.paper} elevation={6}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon/>
         </Avatar>

@@ -5,55 +5,46 @@ import PostMessage from "../models/postMessage.js";
 
 const router = express.Router();
 
-// export const getPosts = async (req, res) => {
-//   const { page } = req.query;
 
-//   try {
-//     const limitPages = 8;
-//     const startIndex = (Number(page) - 1) * limitPages; // Toma el startIndex de cada pagina
-//     const total = await PostMessage.countDocuments({});
-
-//     const posts = await PostMessage.find()
-//       .sort({ _id: -1 })
-//       .limit(limitPages)
-//        .skip(startIndex);
-
-//     res.json({
-//       data: posts,
-//       currentPage: Number(page),
-//       numberOfPages: Math.ceil(total / limitPages),
-//     });
-//   } catch (error) {
-//     res.status(404).json({ message: error.message });
-//   }
-// };
 
 export const getPosts = async (req, res) => {
+  const { page } = req.query;
+
   try {
-    const postMessages = await PostMessage.find();
-    console.log(postMessages);
-    res.status(200).json(postMessages);
+    const limitPages = 8;
+    const startIndex = (Number(page) - 1) * limitPages; // Toma el startIndex de cada pagina
+    const total = await PostMessage.countDocuments({});
+
+    const posts = await PostMessage.find()
+      .sort({ _id: -1 })
+      .limit(limitPages)
+       .skip(startIndex);
+
+    res.json({
+      data: posts,
+      currentPage: Number(page),
+      numberOfPages: Math.ceil(total / limitPages)});
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
 
-// Opciones de busqueda: Query y Params
-// Query -> /posts?page=1 -> page = 1
-// Params -> /posts/123 -> id = 123
 
-export const getPostBySearch = async (req, res) => {
+
+export const getPostsBySearch = async (req, res) => {
   const { searchQuery, tags } = req.query;
   try {
-    const title = new RegExp(searchQuery, "i"); // Regular Expression
-    const posts = await PostMessage.find({
-      $or: [{ title }, { tags: { $in: tags.split(",") } }],
-    });
+    const title = new RegExp(searchQuery, 'i'); // El objeto RegExp se utiliza para hacer coincidir texto con un patrón. Ej: text, Text, TEXT
+    // const posts = await PostMessage.find({$or: [{ title }, { tags: { $in: tags.split(',') } }]});
+   const posts = await PostMessage.find({ title });
+    
 
     res.json({ data: posts });
-    console.log(posts);
+  
+  
   } catch (error) {
     res.status(404).json({ message: error.message });
+  
   }
 };
 
@@ -74,8 +65,7 @@ export const createPost = async (req, res) => {
   const newPost = new PostMessage({
     ...post,
     creator: req.userId,
-    createdAt: new Date().toISOString(),
-  });
+    createdAt: new Date().toISOString()});
 
   try {
     await newPost.save();
